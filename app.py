@@ -27,9 +27,10 @@ def get_tweet_elon_musk():
 
   tweet = api.search_tweets(q=tweet_elon.status.id, count=1)
 
+
   return jsonify({
     "tweet": tweet_elon.status.text, 
-    "created_at": tweet_elon.status.created_at.strftime('%Y-%m-%d %H:%M:%S'),
+    "created_at": tweet_elon.status.created_at,
     "score": random.randrange(1, 100),
     "url": tweet[0].entities['urls'][0]['url'],
     "url-embed": f'https://twitter.com/{tweet_elon.screen_name}/status/{tweet_elon.status.id}'
