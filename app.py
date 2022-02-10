@@ -2,10 +2,11 @@ from flask import Flask, jsonify
 import tweepy
 import configparser
 import random
+from flask_cors import CORS, cross_origin
 
 app = Flask(__name__)
-
-
+cors = CORS(app)
+app.config['CORS_HEADERS'] = 'Content-Type'
 
 @app.route('/', methods=['GET'])
 def get_tweet_elon_musk():
@@ -26,14 +27,14 @@ def get_tweet_elon_musk():
   tweet_elon = api.get_user(screen_name='elonmusk')
 
   tweet = api.search_tweets(q=tweet_elon.status.id, count=1)
-
-
+  
   return jsonify({
+    "id": tweet[0].entities['urls'][0]['expanded_url'].split('status/')[1],
     "tweet": tweet_elon.status.text, 
     "created_at": tweet_elon.status.created_at,
     "score": random.randrange(1, 100),
     "url": tweet[0].entities['urls'][0]['url'],
-    "url-embed": f'https://twitter.com/{tweet_elon.screen_name}/status/{tweet_elon.status.id}'
+    "url_embed": f'https://twitter.com/{tweet_elon.screen_name}/status/{tweet_elon.status.id}'
   })
 
 def __main__():
